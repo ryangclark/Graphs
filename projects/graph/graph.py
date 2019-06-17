@@ -7,49 +7,151 @@ class Graph:
     """Represent a graph as a dictionary of vertices mapping labels to edges."""
     def __init__(self):
         self.vertices = {}
+        
     def add_vertex(self, vertex):
         """
         Add a vertex to the graph.
         """
-        pass  # TODO
+        if vertex in self.vertices:
+            raise Exception('Vertex already exists.')
+
+        self.vertices[vertex] = set()
+        
     def add_edge(self, v1, v2):
         """
         Add a directed edge to the graph.
         """
-        pass  # TODO
+        if not v1 in self.vertices or not v2 in self.vertices:
+            raise Exception(f'One or both vertices do not exist: {v1}, {v2}')
+
+        self.vertices[v1].add(v2)
+        #self.vertices[v2].add(v1)
+        
     def bft(self, starting_vertex):
         """
         Print each vertex in breadth-first order
         beginning from starting_vertex.
         """
-        pass  # TODO
+        if not starting_vertex in self.vertices:
+            raise Exception(f'Not a vertex: {starting_vertex}')
+        
+        q = [starting_vertex]
+        seen = []
+
+        while len(q):
+            current = q[0]
+            seen.append(current)
+
+            for i in self.vertices[current]:
+                if i not in seen:
+                    q.append(i)
+
+            q.pop(0)
+
+        return print('bft: \n', seen)
+        
     def dft(self, starting_vertex):
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
         """
-        pass  # TODO
+        if not starting_vertex in self.vertices:
+            raise Exception(f'Not a vertex: {starting_vertex}')
+        
+        q = [starting_vertex]
+        seen = []
+
+        while len(q):
+            current = q[-1]
+            seen.append(current)
+            q.pop()
+            
+            for i in self.vertices[current]:
+                if i not in seen and i not in q:
+                    q.append(i)
+
+        return print('dft: \n', seen)
+
     def dft_recursive(self, starting_vertex):
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
         This should be done using recursion.
         """
-        pass  # TODO
+        if not starting_vertex in self.vertices:
+            raise Exception(f'Not a vertex: {starting_vertex}')
+        
+        seen = []
+        
+        def traverse(v):
+            seen.append(v)
+            for i in self.vertices[v]:
+                #print('v', v, 'i', i)
+                if i not in seen:
+                    traverse(i)
+
+        traverse(starting_vertex)
+
+        return print('dft recurse: \n', seen)
+        
     def bfs(self, starting_vertex, destination_vertex):
         """
         Return a list containing the shortest path from
         starting_vertex to destination_vertex in
         breath-first order.
         """
-        pass  # TODO
+        if not starting_vertex in self.vertices:
+            raise Exception(f'Not a vertex: {starting_vertex}')
+        
+        q = [starting_vertex]
+        seen = []
+
+        while len(q):
+            current = q[0]
+            seen.append(current)
+
+            if current == destination_vertex:
+                return print('bfs – found: \n', seen)
+
+            vertices = self.vertices[current]
+
+            if destination_vertex in vertices:
+                seen.append(destination_vertex)
+                return print('bfs – found: \n', seen)
+
+            for i in vertices:
+                if i not in seen:
+                    q.append(i)
+
+            q.pop(0)
+
+        return print('bfs – fail: \n', seen)
+    
     def dfs(self, starting_vertex, destination_vertex):
         """
         Return a list containing a path from
         starting_vertex to destination_vertex in
         depth-first order.
         """
-        pass  # TODO
+        if not starting_vertex in self.vertices:
+            raise Exception(f'Not a vertex: {starting_vertex}')
+        
+        q = [starting_vertex]
+        seen = []
+
+        while len(q):
+            current = q[-1]
+            seen.append(current)
+            q.pop()
+
+            if current == destination_vertex:
+                return print('dfs – found: \n', seen)
+            
+            for i in self.vertices[current]:
+                if i not in seen and i not in q:
+                    q.append(i)
+
+        return print('dfs – fail: \n', seen)
 
 
 
