@@ -19,11 +19,9 @@ def earliest_ancestor(lst, n):
         if not node in ships:
             if not path:
                 return None
-            elif len(path) > len(longest):
+            elif len(path) > len(longest) \
+                 or (len(path) == len(longest) and path[-1] < longest[-1]):
                 longest = path
-            elif len(path) == len(longest):
-                if path[-1] < longest[-1]:
-                    longest = path
             return None
 
         for i in ships[node]:
